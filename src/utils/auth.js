@@ -69,3 +69,7 @@ class AuthService {
         window.location.reload(true);
     }
 }
+
+const auth = new AuthService();
+
+export default auth;
