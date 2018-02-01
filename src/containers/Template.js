@@ -1,27 +1,28 @@
-import React, {Component} from 'react';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import injectTapEventPlugin from 'react-tap-event-plugin';
-import NavDrawer from '../components/NavDrawer';
-import {Header, Main} from '../styled/Template';
+import React, {Component} from 'react'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import injectTapEventPlugin from 'react-tap-event-plugin'
+import NavDrawer from '../components/NavDrawer'
+import {Header, Main} from '../styled/Template'
 
-injectTapEventPlugin();
+injectTapEventPlugin()
 
 class Template extends Component {
-    render() {
-        return (
-            <MuiThemeProvider>
-                <div>
-                    <NavDrawer />
-                    <Header>
-                        Header mitel
-                    </Header>
-                    <Main>
-                        {this.props.children}
-                    </Main>
-                </div>
-            </MuiThemeProvider>
-        )
-    }
+
+  render() {
+    return (
+      <MuiThemeProvider>
+        <div>
+          <NavDrawer/>
+          <Header>
+            mitel
+          </Header>
+          <Main>
+            {this.props.children}
+          </Main>
+        </div>
+      </MuiThemeProvider>
+    )
+  }
 }
 
-export default Template;
+export default Template

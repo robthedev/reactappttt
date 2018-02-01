@@ -1,75 +1,74 @@
-import Auth0Lock from 'auth0-lock';
-
+import Auth0Lock from 'auth0-lock'
 const authDomain = 'reactappttt.auth0.com';
 const clientId = 'g0qfJIyeG165He2eJ4HRT7DuxsmgeJDd';
 
 class AuthService {
-    constructor(){
-        this.lock = new Auth0Lock(clientId, authDomain, {
-            auth: {
-                params: {
-                    scope: 'openid email'
-                },
-            },
-        })
+	constructor() {
+		this.lock = new Auth0Lock(clientId, authDomain, {
+			auth: {
+				params: {
+					scope: 'openid email'
+				},
+			},
+		})
 
-        this.showLock = this.showLock.bind(this);
-        this.lock.on('authenticated', this.authProcess.bind(this))
-    }
-    authProcess = (authResult) => {
-        console.log(authResult);
-    }
+		this.showLock = this.showLock.bind(this)
 
-    showLock(){
-        this.lock.show();
-    }
+		this.lock.on('authenticated', this.authProcess.bind(this))
+	}
 
-    setToken = (authFields) => {
-        let {
-            idToken,
-            exp
-        } = authFields
-        localStorage.setItem('idToken', idToken);
-        localStorage.setItem('exp', exp * 1000);
-    }
+	authProcess = (authResult) => {
+		console.log(authResult)
+	}
 
-    isCurrent = () => {
-        let expString = localStorage.getItem('exp');
-        if (!expString){
-            localStorage.removeItem('idToken');
-            return false;
-        }
-        let now = new Date();
-        let exp = new Date(parseInt(expString, 10)); //10 is radix
+	showLock() {
+		this.lock.show()
+	}
 
-        if (exp < now) {
-            this.logout();
-            return false;
-        }
-        return true;
-    }
+	setToken = (authFields) => {
+		let {
+			idToken,
+			exp
+		} = authFields
+		localStorage.setItem('idToken', idToken)
+		localStorage.setItem('exp', exp * 1000)
+	}
 
-    clearLocalStorageVals() {
-        localStorage.removeItem('idToken');
-        localStorage.removeItem('exp');
-    }
+	isCurrent = () => {
+		let expString = localStorage.getItem('exp')
+		if (!expString) {
+			localStorage.removeItem('idToken')
+			return false
+		}
+		let now = new Date()
+		let exp = new Date(parseInt(expString, 10)) //10 is radix parameter
+		if ( exp < now ) {
+			this.logout()
+			return false
+		} else {
+			return true
+		}
+	}
 
-    getToken() {
-        let idToken = localStorage.getItem('idToken');
-        if (this.isCurrent() && idToken) {
-            return idToken;
-        } else {
-            this.clearLocalStorageVals();
-            return false;
-        }
-    }
+	getToken() {
+		let idToken = localStorage.getItem('idToken')
+		if (this.isCurrent() && idToken) {
+			return idToken
+		} else {
+			localStorage.removeItem('idToken')
+			localStorage.removeItem('exp')
+			return false
+		}
+	}
 
-    logout = () => {
-        this.clearLocalStorageVals();
-        window.location.reload(true);
-    }
+	logout = () => {
+		localStorage.removeItem('idToken')
+		localStorage.removeItem('exp')
+		location.reload()
+	}
+
 }
 
-const auth = new AuthService();
+const auth = new AuthService()
 
-export default auth;
+export default auth
